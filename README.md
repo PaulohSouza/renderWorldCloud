@@ -1,6 +1,9 @@
 # renderWorldCloud
 Exemplo de render WorldCloud no R
 
+![Screenshot](https://github.com/PaulohSouza/renderWorldCloud/blob/main/palavras.png)
+
+
 # Biblioteca do Shiny
 library(shiny)
 # Carrega os javascripts da biblioteca
