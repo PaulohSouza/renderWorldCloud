@@ -1,0 +1,54 @@
+require(GExpDes)
+
+GExpDesView()
+
+install.packages("ScottKnott")
+library(ScottKnott)
+
+
+sk <- dbc(base$TRAT, base$Bloco, base$VARIAV, quali = TRUE, mcomp= "sk", sigT = 0.05, sigF = 0.05)
+sk[,3]
+install.packages("devtools")
+devtools::install_github("klainfo/ScottKnottESD", ref="development")
+
+require()
+library(laercio)
+library(ScottKnott)
+
+library(easyanova)
+
+library(dplyr)
+df <- data.frame(factor(base$TRAT), base$TRAT, base$VARIAV)
+str(df)
+
+
+
+anova <-  aov(df$base.VARIAV ~ df$factor.base.TRAT., data = df)
+summary(anova)
+library(easyanova)
+
+sk <- with(df, ea1(df[,-2]), design = 1, p.adjust = 1, list = F)
+
+cld <- sk$Means$scott_knott
+cld
+max <- max(base$TRAT)
+df
+dt <- group_by(df, factor.base.TRAT) %>%
+  summarise(w=mean(Base.VARIAV), sd = sd(Base.VARIAV)) %>%
+  arrange(desc(w))
+
+dt
+
+#mutate(trt = reorder(trt, -volume, mean)) %>%
+m <- {
+  ggplot(dt, aes(dt$TRAT, w)) + 
+    geom_bar(stat = "identity", aes(fill = w), show.legend = FALSE) +
+    geom_errorbar(aes(ymin = w-sd, ymax=w+sd), width = 0.2) +
+    labs(x = "Tratamentos", y = " Resposta") +
+    geom_text(aes(label = cld, y = w + sd + 20)) +
+    scale_x_continuous(breaks = c(1:max)) + 
+    ylim(0,410) +
+    theme_few()
+}
+m
+})
